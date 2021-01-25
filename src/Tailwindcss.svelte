@@ -1,0 +1,14 @@
+<style global>
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body,
+  html {
+    height: 100%;
+  }
+</style>
