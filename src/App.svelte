@@ -1,21 +1,39 @@
 <script lang="ts">
   import Tailwindcss from "./Tailwindcss.svelte";
-  import Navbar from "./components/Navbar/Navbar.svelte";
   import Header from "./components/Header.svelte";
   import ArticleList from "./components/ArticleList.svelte";
-  import Selectors from "./components/Selectors.svelte";
   import type { ArticleModel } from "./models/ArticleModel";
-  import { onMount } from "svelte";
   import type { ApiSource } from "./api/ApiSource";
   import { StorageService } from "./services/StorageService";
   import { selectedSources, selectedSourcesStorageKey } from "./store/sources";
   import { extractNames } from "./helpers";
+  import { Order } from "./models/Order";
+  import type { SortingOption } from "./models/SortingOption";
+  import {
+    SortByComments,
+    SortByDate,
+    SortByLikes,
+    SortByTitle,
+  } from "./models/SortingMethods";
 
   let isFetching = false;
 
   let displayedArticles: ArticleModel[] = [];
 
   let storage = new StorageService();
+
+  let sortingOption: SortingOption[] = [
+    new SortByDate(),
+    new SortByTitle(),
+    new SortByLikes(),
+    new SortByComments(),
+  ];
+
+  let sorter: SortingOption = sortingOption[0];
+
+  function sortDisplayedArticles(sorter: SortingOption, order: Order) {
+    displayedArticles = sorter.sort(displayedArticles, order);
+  }
 
   selectedSources.subscribe(() => {
     const elements = [...$selectedSources.values()];
@@ -25,16 +43,14 @@
 
   async function fetchData(sources: ApiSource[]) {
     displayedArticles = [];
-    console.log("fetch");
     try {
       isFetching = true;
       for (let i = 0; i < sources.length; i++) {
         const source = sources[i];
-        console.log(source);
-
         displayedArticles = displayedArticles.concat(
           await source.GetArticles()
         );
+        sortDisplayedArticles(sorter, Order.Descending);
       }
     } catch (err) {
       console.error(err);
@@ -45,18 +61,20 @@
 </script>
 
 <Tailwindcss />
-<div class="w-full h-full">
+<div class="bg-gray-200 min-h-screen">
   <div class="sticky top-0 z-30">
-    <Navbar />
-    <Header />
+    <Header
+      bind:sortingOption
+      on:sortingChanged={({ detail: sorter }) => {
+        sorter = sorter;
+        sortDisplayedArticles(sorter, Order.Descending);
+      }}
+    />
   </div>
-  <main class="bg-gray-200">
+  <main class=" grid place-items-center">
     <div
-      class="p-4 max-w-7xl lg:w-8/12 w-full h-full flex flex-col items-center mx-auto py-6 sm:px-6 lg:px-8"
+      class="container p-4 w-full h-full xl:max-w-5xl lg:w-8/12 grid auto-rows-min mx-auto py-6 sm:px-6 lg:px-8"
     >
-      <div class="w-full">
-        <Selectors />
-      </div>
       <ArticleList bind:articles={displayedArticles} />
     </div>
   </main>
