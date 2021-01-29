@@ -24,7 +24,8 @@ export function parseSavedSelectedSources(sources: ApiSource[]) {
   let extractedSources: Map<string, ApiSource> = new Map();
   for (let i = 0; i < names.length; i++) {
     const name = names[i];
-    extractedSources.set(name, translator.get(name));
+    let storedName = translator.get(name);
+    if (storedName) extractedSources.set(name, storedName);
   }
 
   return extractedSources;
