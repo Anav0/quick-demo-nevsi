@@ -1,7 +1,6 @@
 <script lang="ts">
   import Article from "./Article.svelte";
   import type { ArticleModel } from "../models/ArticleModel";
-  import { slide, fly } from "svelte/transition";
   import { flip } from "svelte/animate";
 
   export let articles: ArticleModel[] = [];

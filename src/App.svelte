@@ -71,11 +71,7 @@
       }}
     />
   </div>
-  <main class=" grid place-items-center">
-    <div
-      class="container p-4 w-full h-full xl:max-w-5xl lg:w-8/12 grid auto-rows-min mx-auto py-6 sm:px-6 lg:px-8"
-    >
-      <ArticleList bind:articles={displayedArticles} />
-    </div>
+  <main class="w-full h-full grid place-items-center py-6 px-4 sm:px-6 lg:px-8">
+    <ArticleList bind:articles={displayedArticles} />
   </main>
 </div>
