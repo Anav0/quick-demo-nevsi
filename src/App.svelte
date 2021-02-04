@@ -1,5 +1,6 @@
 <script lang="ts">
   import Tailwindcss from "./Tailwindcss.svelte";
+  import SelectSourcesInfo from "./components/SelectSourcesInfo.svelte";
   import Header from "./components/Header.svelte";
   import Loader from "./components/Loader.svelte";
   import ArticleList from "./components/ArticleList.svelte";
@@ -18,6 +19,7 @@
   } from "./models/SortingMethods";
 
   let isFetching = false;
+  let drawSvg = false;
 
   let displayedArticles: ArticleModel[] = [];
 
@@ -72,8 +74,15 @@
       }}
     />
   </div>
-  <main class="w-full h-full grid place-items-center py-6 px-4 sm:px-6 lg:px-8">
-    {#if displayedArticles.length > 0 || isFetching}
+  <main
+    class=" w-full h-full grid place-items-center py-6 px-4 sm:px-6 lg:px-8"
+  >
+    {#if $selectedSources.size < 1}
+      <div class="transform scale-75 mt-20">
+        <SelectSourcesInfo />
+      </div>
+    {/if}
+    {#if !isFetching}
       <ArticleList bind:articles={displayedArticles} />
     {:else}
       <div class="relative">
@@ -82,3 +91,6 @@
     {/if}
   </main>
 </div>
+
+<style>
+</style>
