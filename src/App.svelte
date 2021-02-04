@@ -1,6 +1,7 @@
 <script lang="ts">
   import Tailwindcss from "./Tailwindcss.svelte";
   import Header from "./components/Header.svelte";
+  import Loader from "./components/Loader.svelte";
   import ArticleList from "./components/ArticleList.svelte";
   import type { ArticleModel } from "./models/ArticleModel";
   import type { ApiSource } from "./api/ApiSource";
@@ -72,6 +73,12 @@
     />
   </div>
   <main class="w-full h-full grid place-items-center py-6 px-4 sm:px-6 lg:px-8">
-    <ArticleList bind:articles={displayedArticles} />
+    {#if displayedArticles.length > 0 || isFetching}
+      <ArticleList bind:articles={displayedArticles} />
+    {:else}
+      <div class="relative">
+        <Loader freq={800} />
+      </div>
+    {/if}
   </main>
 </div>
