@@ -6,6 +6,7 @@ export class ArticleModel {
   author: string;
   likes: number;
   comments: number;
+  avatar: string;
   authorUrl: string;
   tags: string[];
 }

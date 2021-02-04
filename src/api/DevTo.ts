@@ -33,7 +33,8 @@ export class DevTo implements ApiSource {
           const element = data[i];
           articles.push({
             author: element.user.name,
-            authorUrl: element.user.profile_image,
+            authorUrl: `https://dev.to/${element.user.username}`,
+            avatar: element.user.profile_image,
             url: element.url,
             comments: element.comments_count,
             date: new Date(element.published_at),

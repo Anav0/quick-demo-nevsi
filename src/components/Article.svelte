@@ -8,14 +8,14 @@
 <div class="lg:max-w-3xl mt-6 px-10 py-6 bg-white rounded-lg shadow-md">
   <div class="flex justify-between items-center">
     <a
-      href={article.url}
+      href={article.authorUrl ?? article.url}
       target="_blank"
       rel="noopener noreferrer"
       class="mb-1 flex items-center"
     >
-      {#if article.authorUrl}
+      {#if article.avatar}
         <img
-          src={article.authorUrl}
+          src={article.avatar}
           alt="avatar"
           class="mr-4 w-8 h-8 object-cover rounded-full hidden sm:block"
         />
