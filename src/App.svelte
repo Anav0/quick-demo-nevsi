@@ -1,6 +1,7 @@
 <script lang="ts">
   import Tailwindcss from "./Tailwindcss.svelte";
   import SelectSourcesInfo from "./components/SelectSourcesInfo.svelte";
+  import Visibility from "./components/Visibility.svelte";
   import Header from "./components/Header.svelte";
   import Loader from "./components/Loader.svelte";
   import ArticleList from "./components/ArticleList.svelte";
@@ -83,14 +84,22 @@
         <SelectSourcesInfo />
       </div>
     {/if}
-    {#if !isFetching}
+
+    {#if !isFetching && $selectedSources.size > 0}
       <div in:fly={{ duration: 500, delay: 250, y: -20 }}>
         <ArticleList bind:articles={displayedArticles} />
       </div>
-    {:else}
-      <div class="relative">
+      <Visibility
+        on:loadMore={() => {
+          console.log("fetch");
+        }}
+      >
         <Loader freq={800} />
-      </div>
+      </Visibility>
+    {/if}
+
+    {#if isFetching}
+      <Loader freq={800} />
     {/if}
   </main>
 </div>

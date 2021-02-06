@@ -12,4 +12,5 @@
       <Article bind:article />
     </div>
   {/each}
+
 </div>
