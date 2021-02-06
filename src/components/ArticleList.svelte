@@ -2,7 +2,6 @@
   import Article from "./Article.svelte";
   import type { ArticleModel } from "../models/ArticleModel";
   import { flip } from "svelte/animate";
-  import { fly } from "svelte/transition";
 
   export let articles: ArticleModel[] = [];
 </script>

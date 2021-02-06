@@ -10,6 +10,7 @@
   import { selectedSources, selectedSourcesStorageKey } from "./store/sources";
   import { extractNames } from "./helpers";
   import { Order } from "./models/Order";
+  import { fly } from "svelte/transition";
   import type { SortingOption } from "./models/SortingOption";
   import {
     SortByComments,
@@ -78,12 +79,14 @@
     class=" w-full h-full grid place-items-center py-6 px-4 sm:px-6 lg:px-8"
   >
     {#if $selectedSources.size < 1}
-      <div class="transform scale-75 mt-20">
+      <div out:fly={{ duration: 250, y: -20 }} class="transform scale-75 mt-20">
         <SelectSourcesInfo />
       </div>
     {/if}
     {#if !isFetching}
-      <ArticleList bind:articles={displayedArticles} />
+      <div in:fly={{ duration: 500, delay: 250, y: -20 }}>
+        <ArticleList bind:articles={displayedArticles} />
+      </div>
     {:else}
       <div class="relative">
         <Loader freq={800} />
