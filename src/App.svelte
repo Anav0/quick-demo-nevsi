@@ -80,7 +80,7 @@
     class=" w-full h-full grid place-items-center py-6 px-4 sm:px-6 lg:px-8"
   >
     {#if $selectedSources.size < 1}
-      <div out:fly={{ duration: 250, y: -20 }} class="transform scale-75 mt-20">
+      <div out:fly={{ duration: 250, y: -20 }} class="pt-16 md:pt-24 lg:pt-14">
         <SelectSourcesInfo />
       </div>
     {/if}

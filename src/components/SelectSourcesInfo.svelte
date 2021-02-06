@@ -103,9 +103,10 @@
   onMount(() => (ready = true));
 </script>
 
-<div class="grid gap-16 place-items-center">
+<div class="grid gap-4 lg:gap-16 place-items-center">
   {#if ready}
     <svg
+      class="w-80 h-auto md:w-3/4 2xl:w-5/6 "
       width="844"
       height="641"
       viewBox="0 0 844 641"
@@ -299,9 +300,10 @@
         </clipPath>
       </defs>
     </svg>
+
     <span
       in:fly={{ y: -30, duration: 500, delay: delay + 2250 }}
-      class="text-5xl font-bold text-indigo-600 text-center max-w-4xl"
+      class="text-4xl 3xl:text-6xl font-bold text-indigo-600 text-center md:max-w-2xl lg:max-w-4xl"
       >Select at least one source for articles to show up</span
     >
   {/if}

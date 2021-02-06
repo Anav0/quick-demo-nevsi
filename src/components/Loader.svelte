@@ -25,6 +25,6 @@
 <div class="relative h-20 w-20">
   <div
     style="transform: translateY({$coords.y}px)"
-    class="absolute inset-x-0 mx-auto w-4 h-4 rounded-full bg-indigo-500"
+    class="absolute inset-0 mx-auto w-4 h-4 rounded-full bg-indigo-500"
   />
 </div>
