@@ -26,7 +26,7 @@
     </a>
     <div>
       <span class="font-light text-gray-600"
-        >{article.date.toLocaleString("pl", {
+        >{article.date.toLocaleString("en", {
           year: "numeric",
           day: "numeric",
           month: "long",

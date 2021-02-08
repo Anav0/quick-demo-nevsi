@@ -22,32 +22,27 @@ export class DevTo implements ApiSource {
 
   async GetArticles() {
     return new Promise<ArticleModel[]>(async (resolve, reject) => {
-      try {
-        const { data } = await axios.get<DevToArticle[]>(
-          `${env.DEV_TO_API_URL}/articles?page=${this.page}&per_page=${this.per_page}`
-        );
-        const articles: ArticleModel[] = [];
-        for (let i = 0; i < data.length; i++) {
-          const element = data[i];
-          articles.push({
-            id: element.id.toString(),
-            author: element.user.name,
-            authorUrl: `https://dev.to/${element.user.username}`,
-            avatar: element.user.profile_image,
-            url: element.url,
-            comments: element.comments_count,
-            date: new Date(element.published_at),
-            desc: element.description,
-            likes: element.public_reactions_count,
-            tags: element.tag_list,
-            title: element.title,
-          } as ArticleModel);
-        }
-        resolve(articles);
-      } catch (err) {
-        console.log(err);
-        return reject(undefined);
+      const { data } = await axios.get<DevToArticle[]>(
+        `${env.DEV_TO_API_URL}/articles?page=${this.page}&per_page=${this.per_page}`
+      );
+      const articles: ArticleModel[] = [];
+      for (let i = 0; i < data.length; i++) {
+        const element = data[i];
+        articles.push({
+          id: element.id.toString(),
+          author: element.user.name,
+          authorUrl: `https://dev.to/${element.user.username}`,
+          avatar: element.user.profile_image,
+          url: element.url,
+          comments: element.comments_count,
+          date: new Date(element.published_at),
+          desc: element.description,
+          likes: element.public_reactions_count,
+          tags: element.tag_list,
+          title: element.title,
+        } as ArticleModel);
       }
+      resolve(articles);
     });
   }
 }

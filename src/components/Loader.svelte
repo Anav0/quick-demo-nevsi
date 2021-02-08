@@ -22,7 +22,7 @@
   }, freq);
 </script>
 
-<div class="relative h-20 w-20">
+<div class="relative h-25 w-25">
   <div
     style="transform: translateY({$coords.y}px)"
     class="absolute inset-0 mx-auto w-4 h-4 rounded-full bg-indigo-500"

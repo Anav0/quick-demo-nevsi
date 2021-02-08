@@ -14,3 +14,6 @@ export const sources = writable<ApiSource[]>(initSources);
 export const selectedSources = writable<Map<string, ApiSource>>(
   new Map<string, ApiSource>(parseSavedSelectedSources(initSources))
 );
+
+export const alertHeader = writable<string>("");
+export const alertDesc = writable<string>("");
