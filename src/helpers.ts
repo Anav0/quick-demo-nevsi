@@ -21,6 +21,8 @@ export function parseSavedSelectedSources(sources: ApiSource[]) {
 
   let names = JSON.parse(new StorageService().load(selectedSourcesStorageKey));
 
+  if (!names) return new Map();
+
   let extractedSources: Map<string, ApiSource> = new Map();
   for (let i = 0; i < names.length; i++) {
     const name = names[i];
@@ -29,4 +31,8 @@ export function parseSavedSelectedSources(sources: ApiSource[]) {
   }
 
   return extractedSources;
+}
+
+export function capitalize(text: string) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }

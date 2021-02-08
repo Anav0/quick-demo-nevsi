@@ -45,6 +45,8 @@
 
   selectedSources.subscribe(() => {
     const elements = [...$selectedSources.values()];
+    console.log($selectedSources);
+
     storage.save(selectedSourcesStorageKey, extractNames(elements));
     if (elements.length <= 0) {
       page = settings.start_page;
