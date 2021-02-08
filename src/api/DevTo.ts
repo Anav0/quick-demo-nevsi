@@ -15,11 +15,9 @@ export class DevTo implements ApiSource {
     this.top = top;
     this.name = "Dev.to";
   }
-
-  ChangeData(page: number, per_page: number, top: boolean) {
+  SetFetchConf(page: number, per_page: number) {
     this.page = page;
     this.per_page = per_page;
-    this.top = top;
   }
 
   async GetArticles() {
@@ -32,6 +30,7 @@ export class DevTo implements ApiSource {
         for (let i = 0; i < data.length; i++) {
           const element = data[i];
           articles.push({
+            id: element.id.toString(),
             author: element.user.name,
             authorUrl: `https://dev.to/${element.user.username}`,
             avatar: element.user.profile_image,

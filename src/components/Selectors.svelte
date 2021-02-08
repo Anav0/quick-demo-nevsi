@@ -84,7 +84,7 @@
       <option
         on:click={(_) => {
           dispatch("sortingChanged", option);
-        }}>{option.name}</option
+        }}>{option.name.charAt(0).toUpperCase() + option.name.slice(1)}</option
       >
     {/each}
   </select>

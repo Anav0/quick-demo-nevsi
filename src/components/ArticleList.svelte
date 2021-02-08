@@ -7,10 +7,9 @@
 </script>
 
 <div class="relative flex flex-col align-center justify-center">
-  {#each articles as article (article.title)}
+  {#each articles as article (article.url)}
     <div animate:flip={{ duration: (d) => 30 * Math.sqrt(d) }}>
       <Article bind:article />
     </div>
   {/each}
-
 </div>

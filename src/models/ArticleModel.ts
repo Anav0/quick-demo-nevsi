@@ -1,4 +1,5 @@
 export class ArticleModel {
+  id: string;
   title: string;
   url: string;
   desc: string;

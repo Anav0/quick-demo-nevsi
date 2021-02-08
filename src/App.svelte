@@ -13,6 +13,7 @@
   import { Order } from "./models/Order";
   import { fly } from "svelte/transition";
   import type { SortingOption } from "./models/SortingOption";
+  import settings from "./settings.js";
   import {
     SortByComments,
     SortByDate,
@@ -21,8 +22,10 @@
   } from "./models/SortingMethods";
 
   let isFetching = false;
-  let drawSvg = false;
 
+  let page = settings.start_page;
+  let per_page = settings.start_per_page;
+  let newArticles: ArticleModel[] = [];
   let displayedArticles: ArticleModel[] = [];
 
   let storage = new StorageService();
@@ -43,20 +46,29 @@
   selectedSources.subscribe(() => {
     const elements = [...$selectedSources.values()];
     storage.save(selectedSourcesStorageKey, extractNames(elements));
-    fetchData(elements);
+    if (elements.length <= 0) {
+      page = settings.start_page;
+      displayedArticles = [];
+      newArticles = [];
+    } else fetchData(elements);
   });
 
   async function fetchData(sources: ApiSource[]) {
-    displayedArticles = [];
     try {
       isFetching = true;
+      newArticles = [];
+      if (page >= 4) throw new Error();
       for (let i = 0; i < sources.length; i++) {
         const source = sources[i];
-        displayedArticles = displayedArticles.concat(
-          await source.GetArticles()
-        );
-        sortDisplayedArticles(sorter, Order.Descending);
+        source.SetFetchConf(page, per_page);
+        newArticles.push(...(await source.GetArticles()));
       }
+
+      displayedArticles = [
+        ...displayedArticles,
+        ...newArticles.filter((x) => !displayedArticles.includes(x)),
+      ];
+      sortDisplayedArticles(sorter, Order.Ascending);
     } catch (err) {
       console.error(err);
     } finally {
@@ -72,7 +84,7 @@
       bind:sortingOption
       on:sortingChanged={({ detail: sorter }) => {
         sorter = sorter;
-        sortDisplayedArticles(sorter, Order.Descending);
+        sortDisplayedArticles(sorter, Order.Ascending);
       }}
     />
   </div>
@@ -85,21 +97,20 @@
       </div>
     {/if}
 
-    {#if !isFetching && $selectedSources.size > 0}
-      <div in:fly={{ duration: 500, delay: 250, y: -20 }}>
+    {#if $selectedSources.size > 0}
+      <div class="min-h-screen" in:fly={{ duration: 500, delay: 250, y: -20 }}>
         <ArticleList bind:articles={displayedArticles} />
       </div>
       <Visibility
         on:loadMore={() => {
+          if (isFetching) return;
           console.log("fetch");
+          page++;
+          fetchData([...$selectedSources.values()]);
         }}
       >
         <Loader freq={800} />
       </Visibility>
-    {/if}
-
-    {#if isFetching}
-      <Loader freq={800} />
     {/if}
   </main>
 </div>
