@@ -3,8 +3,27 @@
   import Tag from "../components/Tag.svelte";
 
   export let article: ArticleModel = undefined;
+
+  let isMobile = true;
+
+  let mobileDateFormat = {
+    year: "numeric",
+    day: "numeric",
+    month: "numeric",
+  };
+  let desktopDateFormat = {
+    year: "numeric",
+    day: "numeric",
+    month: "long",
+    hour: "numeric",
+    minute: "numeric",
+  };
+  function onResize() {
+    isMobile = window.innerWidth <= 450;
+  }
 </script>
 
+<svelte:window on:resize={onResize} />
 <div class="lg:max-w-3xl mt-6 px-10 py-6 bg-white rounded-lg shadow-md">
   <div class="flex justify-between items-center">
     <a
@@ -26,13 +45,10 @@
     </a>
     <div>
       <span class="font-light text-gray-600"
-        >{article.date.toLocaleString("en", {
-          year: "numeric",
-          day: "numeric",
-          month: "long",
-          hour: "numeric",
-          minute: "numeric",
-        })}</span
+        >{article.date.toLocaleString(
+          "en",
+          isMobile ? mobileDateFormat : desktopDateFormat
+        )}</span
       >
     </div>
   </div>
@@ -41,7 +57,7 @@
       href={article.url}
       rel="noopener noreferrer"
       target="_blank"
-      class="text-2xl text-gray-700 font-bold hover:underline"
+      class="text-xl md:text-2xl text-gray-700 font-bold hover:underline"
       >{article.title}</a
     >
     <p class="mt-2 text-gray-600">

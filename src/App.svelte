@@ -28,12 +28,20 @@
   } from "./models/SortingMethods";
 
   let isFetching = false;
+  let sortingOrder = Order.Ascending;
 
   let page = settings.start_page;
   let per_page = settings.start_per_page;
   let newArticles: ArticleModel[] = [];
-  let displayedArticles: ArticleModel[] = [];
 
+  let displayedArticles: ArticleModel[] = [];
+  $: displayedArticles = sorter.sort(
+    [
+      ...displayedArticles,
+      ...newArticles.filter((x) => !displayedArticles.includes(x)),
+    ],
+    sortingOrder
+  );
   let storage = new StorageService();
 
   let sortingOption: SortingOption[] = [
@@ -45,14 +53,8 @@
 
   let sorter: SortingOption = sortingOption[0];
 
-  function sortDisplayedArticles(sorter: SortingOption, order: Order) {
-    displayedArticles = sorter.sort(displayedArticles, order);
-  }
-
   selectedSources.subscribe(() => {
     const elements = [...$selectedSources.values()];
-    console.log($selectedSources);
-
     storage.save(selectedSourcesStorageKey, extractNames(elements));
     if (elements.length <= 0) {
       page = settings.start_page;
@@ -65,17 +67,14 @@
     try {
       isFetching = true;
       newArticles = [];
+      let tmp = [];
       for (let i = 0; i < sources.length; i++) {
         const source = sources[i];
         source.SetFetchConf(page, per_page);
-        newArticles.push(...(await source.GetArticles()));
+        tmp.push(...(await source.GetArticles()));
       }
 
-      displayedArticles = [
-        ...displayedArticles,
-        ...newArticles.filter((x) => !displayedArticles.includes(x)),
-      ];
-      sortDisplayedArticles(sorter, Order.Ascending);
+      newArticles = tmp;
     } catch (err) {
       console.error(err);
       $alertHeader = "Fetching error";
@@ -92,9 +91,9 @@
   <div class="sticky top-0 z-30">
     <Header
       bind:sortingOption
-      on:sortingChanged={({ detail: sorter }) => {
-        sorter = sorter;
-        sortDisplayedArticles(sorter, Order.Ascending);
+      on:sortingChanged={({ detail }) => {
+        sorter = detail;
+        sorter.sort(displayedArticles, sortingOrder);
       }}
     />
   </div>
