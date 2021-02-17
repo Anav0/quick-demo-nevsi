@@ -122,7 +122,6 @@
       <Visibility
         on:loadMore={() => {
           if (isFetching) return;
-          console.log("fetch");
           page++;
           fetchData([...$selectedSources.values()]);
         }}

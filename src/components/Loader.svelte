@@ -10,19 +10,19 @@
       damping: 0.25,
     }
   );
-  let i = 0;
 
+  let i = 0;
   let span = 15;
   setInterval(() => {
     if (i % 2 == 0) $coords.y += span;
     else $coords.y -= span;
-
+    $coords.y = Math.round($coords.y);
     i++;
     if (i > 100) i = 0;
   }, freq);
 </script>
 
-<div class="relative h-25 w-25">
+<div class="relative h-44 w-44">
   <div
     style="transform: translateY({$coords.y}px)"
     class="absolute inset-0 mx-auto w-4 h-4 rounded-full bg-indigo-500"
